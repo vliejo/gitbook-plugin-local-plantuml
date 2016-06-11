@@ -24,7 +24,7 @@
     "q": "^1.4.1"
   },
   "devDependencies": {
-    "gitbook-tester": "1.4.1",
+    "gitbook-tester": "1.4.2",
     "mocha": "^2.5.3"
   }
 }
