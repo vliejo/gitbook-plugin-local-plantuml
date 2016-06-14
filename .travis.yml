@@ -4,4 +4,5 @@ node_js:
 - '4'
 - '6'
 before_script:
+- npm install -g gitbook-cli
 - gitbook install
