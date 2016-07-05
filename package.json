@@ -1,6 +1,6 @@
 {
   "name": "gitbook-plugin-local-plantuml",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GitBook plugin for PlantUML that generates and stores files locally",
   "repository": {
     "type": "git",

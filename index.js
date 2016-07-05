@@ -46,8 +46,8 @@ module.exports = {
         }
         
         this.log.debug("copying plantUML from tempDir for ", imageName);
-        fs.createReadStream(imagePath).pipe(fs.createWriteStream(path.join(this.output.root(), imageName)));
-        
+        this.output.copyFile(imagePath,imageName);
+
         return "<img src=\"" + path.join("/", imageName) + "\"/>";
       }
     }
