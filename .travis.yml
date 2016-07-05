@@ -6,3 +6,11 @@ node_js:
 before_script:
 - npm install -g gitbook-cli
 - gitbook install
+deploy:
+  provider: npm
+  email: vliejo@gmail.com
+  api_key:
+    secure: BPh0NhbtQ+awoY/tuTEilA0i+acl7ZjJgwoWRjjOFHvRvDrY7bmGfnrrLnNohAMHo34lCPWac4S2GutPkORqQuX6ZASmSbpaTRQYIZfXJRg/ow5sN4kP5SWXyhB0JleTl0mv0The9ITQvJw0c0Cv5Ln+bH1H0EtkaYMXR4fQ7EM1c+icZbl/li8KrbPzqQCIwJ2WFtLMXy8yDiVeN6BL5H4LQBNhdnORqbkeGbkG50vyaACPA6yWc5Ba/O+Ya3moged2IAxy388sTzO8dVwREf/ElO38P7ZxJ9nRLKYxtomBVJ6JKr/8rDcEucb6CXIKSHgvVtuRqLDV8kACrtfWsJnsznzkT8Qdttej2Pnogj34sVMBuQznERWiMij0uxj/hNYD8yR8495HCguiBk6B31+qMPOiNwvGy7ILC4Kv91Gny8ECbzKyvk+J2OmQoClAOfvJhHkvFuUiDzzJF61sBDH/mg9ETBdT12Y/L9qLJ42du1m4uaiQgdNnUHk38Dq+EBFOIPWQHIaxUmf5Gz/VCjqp0bMynvlPEH4c/LQwarLp1zQYtvoW9vzMMT86RnO+pnZ5NGdBSzyg6JM/czt+3/YS1spps4GkIsf/DZGOyNjK1XMTVwkmJ2De6kOaGp00wfKM+0YRYSS0s/t3fboqXCqkhnmF4bkkqvapTyG6+Jk=
+  on:
+    tags: true
+    branch: master
