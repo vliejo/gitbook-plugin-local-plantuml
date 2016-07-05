@@ -1,3 +1,4 @@
+var os = require('os');
 var fs = require('fs');
 var crypto = require('crypto');
 var util = require('util');
@@ -19,27 +20,35 @@ module.exports = {
       process: function (block) {
 
         var imageName = hashedImageName(block.body) + ".png";
-        var imagePath = path.join(this.output.root(), imageName);
-        var imageRelativePath = imagePath.replace(this.output.root(), '');
+        this.log.debug("using tempDir ", os.tmpdir());
+        var imagePath = path.join(os.tmpdir(), imageName);
         var umlText = block.body;
 
-        this.log.info("rendering puml image to ", imagePath);
+        if (fs.existsSync(imagePath)) {
+          this.log.info("skipping plantUML image for ", imageName);
+        }
+        else {
+          this.log.info("rendering plantUML image to ", imageName);
 
-        var cwd = cwd || process.cwd();
+          var cwd = cwd || process.cwd();
 
-        childProcess.spawnSync("java", [
-            '-Dplantuml.include.path=' + cwd,
-            '-Djava.awt.headless=true',
-            '-jar', PLANTUML_JAR,
-            '-pipe'
-          ],
-          {
-            // TODO: Extract stdout to a var and persist with this.output.writeFile
-            stdio: ['pipe', fs.openSync(imagePath, 'w'), 'pipe'],
-            input: umlText
-          });
-
-        return "<img src=\"" + imageRelativePath + "\"/>";
+          childProcess.spawnSync("java", [
+              '-Dplantuml.include.path=' + cwd,
+              '-Djava.awt.headless=true',
+              '-jar', PLANTUML_JAR,
+              '-pipe'
+            ],
+            {
+              // TODO: Extract stdout to a var and persist with this.output.writeFile
+              stdio: ['pipe', fs.openSync(imagePath, 'w'), 'pipe'],
+              input: umlText
+            });
+        }
+        
+        this.log.debug("copying plantUML from tempDir for ", imageName);
+        fs.createReadStream(imagePath).pipe(fs.createWriteStream(path.join(this.output.root(), imageName)));
+        
+        return "<img src=\"" + path.join("/", imageName) + "\"/>";
       }
     }
   }
