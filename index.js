@@ -4,8 +4,11 @@ var crypto = require('crypto');
 var util = require('util');
 var path = require('path');
 var childProcess = require('child_process');
+var Entities = require('html-entities').XmlEntities;
 
 var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
+
+var entities = new Entities();
 
 function hashedImageName(content) {
   var md5sum = crypto.createHash('md5');
@@ -22,8 +25,7 @@ module.exports = {
         var imageName = hashedImageName(block.body) + ".png";
         this.log.debug("using tempDir ", os.tmpdir());
         var imagePath = path.join(os.tmpdir(), imageName);
-        var umlText = block.body;
-
+        var umlText = entities.decode(block.body);
         if (fs.existsSync(imagePath)) {
           this.log.info("skipping plantUML image for ", imageName);
         }
