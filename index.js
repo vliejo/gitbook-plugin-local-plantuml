@@ -5,6 +5,7 @@ var util = require('util');
 var path = require('path');
 var childProcess = require('child_process');
 var Entities = require('html-entities').XmlEntities;
+var marked = require('marked');
 
 var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
 
@@ -17,15 +18,24 @@ function hashedImageName(content) {
   return md5sum.digest('hex')
 }
 
+function parseUmlText(sourceText) {
+  var umlText = entities.decode(sourceText).replace(/(^[ \t]*\n)/gm, '');
+  umlText = marked(umlText).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
+  umlText = entities.decode(umlText);
+
+  return umlText;
+}
+
 module.exports = {
   blocks: {
     plantuml: {
       process: function (block) {
+        var umlText = parseUmlText(block.body);
 
-        var imageName = hashedImageName(block.body) + ".png";
+        var imageName = hashedImageName(umlText) + ".png";
         this.log.debug("using tempDir ", os.tmpdir());
         var imagePath = path.join(os.tmpdir(), imageName);
-        var umlText = entities.decode(block.body);
+
         if (fs.existsSync(imagePath)) {
           this.log.info("skipping plantUML image for ", imageName);
         }

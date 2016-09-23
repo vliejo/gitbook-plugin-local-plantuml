@@ -22,6 +22,7 @@
   "dependencies": {
     "crypto": "0.0.3",
     "html-entities": "^1.2.0",
+    "marked": "^0.3.6",
     "q": "^1.4.1"
   },
   "devDependencies": {
