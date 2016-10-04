@@ -12,7 +12,7 @@ describe('PlantUML', function() {
             .withLocalPlugin(path.join(__dirname, '..'))
             .create()
             .then(function(result) {
-                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><img src="eead78b239eaa9193281a53b7774a21a.png"></p>')
+                assert.equal(result[0].content, '<p>This is a diagram:</p><p><img src="84918a9a66a4e75be00a46643eab802f.png"></p>')
             });
     });
     it('should correctly replace nested page by img html tag in book root', function() {
@@ -34,7 +34,7 @@ describe('PlantUML', function() {
             )
             .create()
             .then(function(result) {
-                assert.equal(result.get("nesting/nested.html").content, '<p>This is a diagram:</p>\n<p><img src="../eead78b239eaa9193281a53b7774a21a.png"></p>')
+                assert.equal(result.get("nesting/nested.html").content, '<p>This is a diagram:</p><p><img src="../84918a9a66a4e75be00a46643eab802f.png"></p>')
             });
     });
 });
