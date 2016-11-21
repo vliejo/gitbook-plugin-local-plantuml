@@ -34,6 +34,11 @@ module.exports = {
         var outputFormat = this.generator == 'ebook'? '-tpng' : '-tsvg';
 
         var umlText = parseUmlText(block.body);
+        var re = /@startditaa/
+
+        if (re.test(umlText)) {
+            defaultFormat = '.png';
+        }
 
         var imageName = hashedImageName(umlText) + defaultFormat;
         this.log.debug("using tempDir ", os.tmpdir());
