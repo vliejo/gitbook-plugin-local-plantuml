@@ -30,9 +30,17 @@ module.exports = {
   blocks: {
     plantuml: {
       process: function (block) {
-        var umlText = parseUmlText(block.body);
+        var defaultFormat = this.generator == 'ebook'? '.png' : '.svg';
+        var outputFormat = this.generator == 'ebook'? '-tpng' : '-tsvg';
 
-        var imageName = hashedImageName(umlText) + ".png";
+        var umlText = parseUmlText(block.body);
+        var re = /@startditaa/
+
+        if (re.test(umlText)) {
+            defaultFormat = '.png';
+        }
+
+        var imageName = hashedImageName(umlText) + defaultFormat;
         this.log.debug("using tempDir ", os.tmpdir());
         var imagePath = path.join(os.tmpdir(), imageName);
 
@@ -47,7 +55,7 @@ module.exports = {
           childProcess.spawnSync("java", [
               '-Dplantuml.include.path=' + cwd,
               '-Djava.awt.headless=true',
-              '-jar', PLANTUML_JAR,
+              '-jar', PLANTUML_JAR, outputFormat,
               '-pipe'
             ],
             {
