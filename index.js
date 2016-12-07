@@ -11,6 +11,8 @@ var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
 
 var entities = new Entities();
 
+var pageInfo;
+
 function hashedImageName(content) {
   var md5sum = crypto.createHash('md5');
   md5sum.update(content);
@@ -33,7 +35,18 @@ module.exports = {
         var defaultFormat = this.generator == 'ebook'? '.png' : '.svg';
         var outputFormat = this.generator == 'ebook'? '-tpng' : '-tsvg';
 
-        var umlText = parseUmlText(block.body);
+
+        var umlText ;
+        if (block.kwargs && block.kwargs.path) {
+          var pumlPath = block.kwargs.path;
+          if (pageInfo.directory)  {
+            pumlPath = pageInfo.directory + '/' + pumlPath;
+          }
+          var resolvedPath = this.book.resolve(pumlPath);
+          umlText = fs.readFileSync(resolvedPath, 'utf8');
+        }  else  {
+          umlText= parseUmlText(block.body);
+        }
         var re = /@startditaa/
 
         if (re.test(umlText)) {
@@ -70,6 +83,13 @@ module.exports = {
 
         return "<img src=\"" + path.join("/", imageName) + "\"/>";
       }
+    }
+  },
+  hooks: {
+    'page:before': function(page) {
+      var pagePath = page.path;
+      pageInfo = { directory: pagePath.substring(0, pagePath.lastIndexOf("/"))};
+      return page;
     }
   }
 };
